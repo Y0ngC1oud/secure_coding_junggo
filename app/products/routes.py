@@ -6,7 +6,7 @@ from flask_login import current_user, login_required
 
 from ..chat.forms import MessageForm
 from ..extensions import db
-from ..models import Message, Product
+from ..models import Message, Product, Transaction
 from .forms import CATEGORY_CHOICES, ProductForm
 
 products_bp = Blueprint("products", __name__, url_prefix="/products")
@@ -75,13 +75,42 @@ def create_product():
 def detail_product(product_id):
     product = Product.query.get_or_404(product_id)
 
-    if product.status != "active":
+    if product.status == "blocked":
         is_owner = current_user.is_authenticated and current_user.id == product.seller_id
         is_admin = current_user.is_authenticated and current_user.is_admin
         if not (is_owner or is_admin):
             abort(404)
 
     return render_template("products/detail.html", product=product)
+
+
+@products_bp.route("/<int:product_id>/buy", methods=["POST"])
+@login_required
+def buy_product(product_id):
+    product = Product.query.get_or_404(product_id)
+
+    if product.seller_id == current_user.id:
+        flash("본인이 등록한 상품은 구매할 수 없습니다.", "error")
+        return redirect(url_for("products.detail_product", product_id=product.id))
+
+    if product.status != "active":
+        flash("이미 판매되었거나 구매할 수 없는 상품입니다.", "error")
+        return redirect(url_for("products.detail_product", product_id=product.id))
+
+    if current_user.balance < product.price:
+        flash("잔액이 부족합니다.", "error")
+        return redirect(url_for("products.detail_product", product_id=product.id))
+
+    seller = product.seller
+    # 잔액 차감/적립, 거래 기록 생성, 상품 상태 변경을 하나의 트랜잭션으로 커밋해 원자성을 보장
+    current_user.balance -= product.price
+    seller.balance += product.price
+    product.status = "sold"
+    db.session.add(Transaction(sender_id=current_user.id, receiver_id=seller.id, amount=product.price))
+    db.session.commit()
+
+    flash(f"'{product.name}' 상품을 {product.price:,}원에 구매했습니다.", "success")
+    return redirect(url_for("products.detail_product", product_id=product.id))
 
 
 @products_bp.route("/<int:product_id>/edit", methods=["GET", "POST"])
