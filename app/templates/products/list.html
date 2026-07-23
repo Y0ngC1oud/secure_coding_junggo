@@ -8,12 +8,25 @@
         <a class="btn" href="{{ url_for('products.create_product') }}">상품 등록</a>
       {% endif %}
     </div>
+    <form method="get" action="{{ url_for('products.list_products') }}" style="display:flex;gap:8px;margin:16px 0;">
+      <input type="text" name="q" value="{{ keyword }}" placeholder="상품명으로 검색" style="flex:1;padding:8px 10px;border:1px solid #d0d3d9;border-radius:6px;">
+      <select name="category" style="padding:8px 10px;border:1px solid #d0d3d9;border-radius:6px;">
+        <option value="" {% if not selected_category %}selected{% endif %}>전체 카테고리</option>
+        {% for value, label in categories %}
+          <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn" type="submit">검색</button>
+    </form>
+
     {% if products %}
       <ul>
         {% for product in products %}
           <li><a href="{{ url_for('products.detail_product', product_id=product.id) }}">{{ product.name }}</a></li>
         {% endfor %}
       </ul>
+    {% elif keyword or selected_category %}
+      <p>검색 결과가 없습니다.</p>
     {% else %}
       <p>등록된 상품이 없습니다.</p>
     {% endif %}

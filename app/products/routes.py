@@ -1,26 +1,41 @@
 import os
 import uuid
 
-from flask import Blueprint, abort, current_app, flash, redirect, render_template, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
 from ..chat.forms import MessageForm
 from ..extensions import db
 from ..models import Message, Product
-from .forms import ProductForm
+from .forms import CATEGORY_CHOICES, ProductForm
 
 products_bp = Blueprint("products", __name__, url_prefix="/products")
 
 
 @products_bp.route("/")
 def list_products():
-    products = Product.query.filter_by(status="active").order_by(Product.created_at.desc()).all()
+    keyword = request.args.get("q", "").strip()
+    category = request.args.get("category", "").strip()
+
+    query = Product.query.filter_by(status="active")
+    if keyword:
+        query = query.filter(Product.name.ilike(f"%{keyword}%"))
+    if category:
+        query = query.filter_by(category=category)
+
+    products = query.order_by(Product.created_at.desc()).all()
     messages = (
         Message.query.filter_by(receiver_id=None).order_by(Message.created_at.asc()).limit(50).all()
     )
     chat_form = MessageForm()
     return render_template(
-        "products/list.html", products=products, messages=messages, chat_form=chat_form
+        "products/list.html",
+        products=products,
+        messages=messages,
+        chat_form=chat_form,
+        categories=CATEGORY_CHOICES,
+        keyword=keyword,
+        selected_category=category,
     )
 
 
