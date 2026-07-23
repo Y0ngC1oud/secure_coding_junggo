@@ -2,7 +2,7 @@
 {% block title %}{{ partner.nickname }}님과의 채팅 - Tiny Market{% endblock %}
 {% block content %}
   <div class="card">
-    <h1>{{ partner.nickname }}님과의 채팅</h1>
+    <h1><a href="{{ url_for('auth.public_profile', user_id=partner.id) }}">{{ partner.nickname }}</a>님과의 채팅</h1>
     <div class="chat-box" style="max-height:360px;">
       {% if messages %}
         {% for message in messages %}

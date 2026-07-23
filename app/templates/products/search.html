@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}상품 검색 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <h1>상품 검색</h1>
+      <a class="btn secondary" href="{{ url_for('products.list_products') }}">전체 목록으로</a>
+    </div>
+    <form method="get" action="{{ url_for('products.search_products') }}" style="display:flex;gap:8px;margin:16px 0;">
+      <input type="text" name="q" value="{{ keyword }}" placeholder="상품명으로 검색" style="flex:1;padding:9px 12px;border:1px solid var(--color-border);border-radius:8px;">
+      <select name="category" style="padding:9px 12px;border:1px solid var(--color-border);border-radius:8px;background:#fff;">
+        <option value="" {% if not selected_category %}selected{% endif %}>전체 카테고리</option>
+        {% for value, label in categories %}
+          <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn" type="submit">검색</button>
+    </form>
+
+    {% if keyword or selected_category %}
+      <p class="muted" style="margin-bottom:4px;">
+        {% if keyword %}"{{ keyword }}"{% endif %}
+        {% if selected_category %} · {{ selected_category }}{% endif %}
+        검색 결과 {{ products|length }}건
+      </p>
+    {% endif %}
+
+    {% if products %}
+      <ul class="product-grid">
+        {% for product in products %}
+          <li>
+            <a class="product-card" href="{{ url_for('products.detail_product', product_id=product.id) }}">
+              <div class="thumb">
+                {% if product.image_path %}
+                  <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+                {% else %}
+                  이미지 없음
+                {% endif %}
+              </div>
+              <div class="info">
+                <div class="name">{{ product.name }}</div>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">검색 결과가 없습니다.</p>
+    {% endif %}
+  </div>
+{% endblock %}

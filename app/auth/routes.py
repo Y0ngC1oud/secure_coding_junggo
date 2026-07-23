@@ -66,6 +66,17 @@ def logout():
     return redirect(url_for("main.home"))
 
 
+@auth_bp.route("/users/<int:user_id>")
+def public_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    products = (
+        Product.query.filter_by(seller_id=user.id, status="active")
+        .order_by(Product.created_at.desc())
+        .all()
+    )
+    return render_template("auth/profile.html", profile_user=user, products=products)
+
+
 @auth_bp.route("/mypage")
 @login_required
 def mypage():

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ profile_user.nickname }}님의 프로필 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>{{ profile_user.nickname }}</h1>
+    <p class="muted">{{ profile_user.created_at.strftime('%Y-%m-%d') }} 가입</p>
+    {% if profile_user.bio %}
+      <p style="white-space:pre-line;margin-top:12px;">{{ profile_user.bio }}</p>
+    {% else %}
+      <p class="muted" style="margin-top:12px;">등록된 소개글이 없습니다.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>{{ profile_user.nickname }}님이 등록한 상품</h2>
+    {% if products %}
+      <ul class="product-grid">
+        {% for product in products %}
+          <li>
+            <a class="product-card" href="{{ url_for('products.detail_product', product_id=product.id) }}">
+              <div class="thumb">
+                {% if product.image_path %}
+                  <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+                {% else %}
+                  이미지 없음
+                {% endif %}
+              </div>
+              <div class="info">
+                <div class="name">{{ product.name }}</div>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">등록한 상품이 없습니다.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -14,7 +14,11 @@ transfers_bp = Blueprint("transfers", __name__, url_prefix="/transfers")
 def new_transfer():
     form = TransferForm()
     if form.validate_on_submit():
-        receiver = User.query.filter_by(username=form.receiver_username.data).first()
+        identifier = form.receiver_username.data.strip()
+        # 아이디로 먼저 찾고, 없으면 닉네임으로 조회 (닉네임은 중복 가능하므로 아이디를 우선함)
+        receiver = User.query.filter_by(username=identifier).first()
+        if receiver is None:
+            receiver = User.query.filter_by(nickname=identifier).first()
         amount = form.amount.data
 
         if receiver is None:

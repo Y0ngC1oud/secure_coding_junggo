@@ -5,7 +5,8 @@ from wtforms.validators import DataRequired, NumberRange
 
 class TransferForm(FlaskForm):
     receiver_username = StringField(
-        "받는 사람 아이디", validators=[DataRequired(message="받는 사람 아이디를 입력해주세요.")]
+        "받는 사람 아이디 또는 닉네임",
+        validators=[DataRequired(message="받는 사람 아이디 또는 닉네임을 입력해주세요.")],
     )
     amount = IntegerField(
         "송금 금액",

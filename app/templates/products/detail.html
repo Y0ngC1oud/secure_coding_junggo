@@ -13,7 +13,7 @@
     <h1>{{ product.name }}</h1>
     <p style="font-size:20px;font-weight:700;">{{ "{:,}".format(product.price) }}원</p>
     <p style="color:#666;">카테고리: {{ product.category }}</p>
-    <p style="color:#666;">판매자: {{ product.seller.nickname }}</p>
+    <p style="color:#666;">판매자: <a href="{{ url_for('auth.public_profile', user_id=product.seller_id) }}">{{ product.seller.nickname }}</a></p>
     <p style="white-space:pre-line;margin-top:16px;">{{ product.description }}</p>
 
     {% if current_user.is_authenticated and current_user.id == product.seller_id %}
