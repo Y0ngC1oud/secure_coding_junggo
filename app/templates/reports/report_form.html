@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}신고하기 - Tiny Market{% endblock %}
 {% block content %}
-  <div class="card" style="max-width:420px;margin:0 auto;">
+  <div class="card auth-card">
+    <div class="icon-badge" style="background:linear-gradient(135deg, var(--color-danger), #f97316);">🚩</div>
     <h1>신고하기</h1>
-    <p style="color:#666;">신고 대상: {{ target_label }}</p>
+    <p class="muted">신고 대상: <strong style="color:var(--color-text);">{{ target_label }}</strong></p>
     <form class="stacked" method="post" novalidate>
       {{ form.hidden_tag() }}
       <label for="{{ form.reason.id }}">{{ form.reason.label.text }}</label>

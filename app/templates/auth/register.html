@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block title %}회원가입 - Tiny Market{% endblock %}
 {% block content %}
-  <div class="card" style="max-width:420px;margin:0 auto;">
+  <div class="card auth-card">
+    <div class="icon-badge">🛍️</div>
     <h1>회원가입</h1>
     <form class="stacked" method="post" novalidate>
       {{ form.hidden_tag() }}
@@ -24,5 +25,8 @@
 
       <button class="btn" type="submit" style="margin-top:16px;width:100%;">가입하기</button>
     </form>
+    <p style="margin-top:12px;font-size:13px;">
+      이미 계정이 있으신가요? <a href="{{ url_for('auth.login') }}">로그인</a>
+    </p>
   </div>
 {% endblock %}

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}송금 - Tiny Market{% endblock %}
 {% block content %}
-  <div class="card" style="max-width:420px;margin:0 auto;">
+  <div class="card auth-card">
+    <div class="icon-badge">💸</div>
     <h1>송금하기</h1>
-    <p style="color:#666;">내 잔액: {{ "{:,}".format(current_user.balance) }}원</p>
+    <p class="muted">내 잔액: <strong style="color:var(--color-text);">{{ "{:,}".format(current_user.balance) }}원</strong></p>
     <form class="stacked" method="post" novalidate>
       {{ form.hidden_tag() }}
 

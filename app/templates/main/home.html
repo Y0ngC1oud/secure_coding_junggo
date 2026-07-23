@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}홈 - Tiny Market{% endblock %}
 {% block content %}
-  <div class="hero reveal">
+  <div class="hero">
     <span class="eyebrow">중고거래 플랫폼</span>
     <h1>필요 없는 물건, 필요한 사람에게.</h1>
     <p>Tiny Market에서 중고 물품을 올리고, 채팅으로 이야기하고, 안전하게 송금까지 한 번에 끝내보세요.</p>
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="stats-bar reveal">
+  <div class="stats-bar">
     <div class="stat">
       <span class="stat-number" data-target="{{ stats.user_count }}">0</span>
       <span class="stat-label">가입 회원</span>
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="card reveal">
+  <div class="card">
     <h2>카테고리별로 둘러보기</h2>
     <div class="category-chips">
       {% for value, label in categories %}
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="feature-grid reveal">
+  <div class="feature-grid">
     <div class="feature-card">
       <div class="icon">💬</div>
       <h3>실시간 소통</h3>
@@ -57,7 +57,7 @@
     </div>
   </div>
 
-  <div class="card reveal">
+  <div class="card">
     <h2>이렇게 이용해보세요</h2>
     <div class="steps" style="margin-top:14px;">
       <div class="step">
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div class="card reveal">
+  <div class="card">
     <div class="section-heading">
       <h2>최근 등록된 상품</h2>
       <a href="{{ url_for('products.list_products') }}">전체 보기 →</a>
@@ -103,51 +103,10 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="muted">아직 등록된 상품이 없습니다. 첫 상품을 등록해보세요!</p>
+      <div class="empty-state">
+        <div class="icon">📦</div>
+        <p>아직 등록된 상품이 없습니다. 첫 상품을 등록해보세요!</p>
+      </div>
     {% endif %}
   </div>
-
-  <script>
-    (function () {
-      var revealEls = document.querySelectorAll(".reveal");
-      if ("IntersectionObserver" in window) {
-        var observer = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("in-view");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        revealEls.forEach(function (el) {
-          observer.observe(el);
-        });
-      } else {
-        revealEls.forEach(function (el) {
-          el.classList.add("in-view");
-        });
-      }
-
-      var counters = document.querySelectorAll(".stat-number");
-      counters.forEach(function (el) {
-        var target = parseInt(el.dataset.target || "0", 10);
-        var duration = 900;
-        var start = null;
-        function step(timestamp) {
-          if (!start) start = timestamp;
-          var progress = Math.min((timestamp - start) / duration, 1);
-          el.textContent = Math.floor(progress * target).toLocaleString();
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          } else {
-            el.textContent = target.toLocaleString();
-          }
-        }
-        requestAnimationFrame(step);
-      });
-    })();
-  </script>
 {% endblock %}

@@ -2,13 +2,21 @@
 {% block title %}마이페이지 - Tiny Market{% endblock %}
 {% block content %}
   <div class="card">
-    <h1>마이페이지</h1>
-    <p><strong>아이디:</strong> {{ current_user.username }}</p>
-    <p><strong>닉네임:</strong> {{ current_user.nickname }}</p>
-    <p><strong>잔액:</strong> {{ "{:,}".format(current_user.balance) }}원</p>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <div class="icon-badge" style="width:52px;height:52px;font-size:22px;border-radius:14px;">{{ current_user.nickname[0] }}</div>
+      <div>
+        <h1 style="margin-bottom:2px;">{{ current_user.nickname }}</h1>
+        <p class="muted" style="margin:0;font-size:13px;">아이디: {{ current_user.username }}</p>
+      </div>
+      <div style="margin-left:auto;text-align:right;">
+        <span class="badge" style="background:var(--color-success-bg);color:var(--color-success-text);font-size:13px;padding:6px 12px;">
+          잔액 {{ "{:,}".format(current_user.balance) }}원
+        </span>
+      </div>
+    </div>
   </div>
 
-  <div class="card" style="margin-top:16px;">
+  <div class="card">
     <h2>소개글 수정</h2>
     <form class="stacked" method="post" action="{{ url_for('auth.update_bio') }}">
       {{ profile_form.hidden_tag() }}
@@ -19,7 +27,7 @@
     </form>
   </div>
 
-  <div class="card" style="margin-top:16px;">
+  <div class="card">
     <h2>비밀번호 변경</h2>
     <form class="stacked" method="post" action="{{ url_for('auth.update_password') }}">
       {{ password_form.hidden_tag() }}
@@ -40,19 +48,36 @@
     </form>
   </div>
 
-  <div class="card" style="margin-top:16px;">
-    <h2>내가 등록한 상품</h2>
+  <div class="card">
+    <div class="section-heading">
+      <h2>내가 등록한 상품</h2>
+      <a href="{{ url_for('products.create_product') }}">+ 새 상품 등록</a>
+    </div>
     {% if my_products %}
-      <ul>
+      <ul class="product-grid">
         {% for product in my_products %}
           <li>
-            <a href="{{ url_for('products.detail_product', product_id=product.id) }}">{{ product.name }}</a>
-            - {{ "{:,}".format(product.price) }}원 ({{ product.status }})
+            <a class="product-card" href="{{ url_for('products.detail_product', product_id=product.id) }}">
+              <div class="thumb">
+                {% if product.image_path %}
+                  <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+                {% else %}
+                  이미지 없음
+                {% endif %}
+              </div>
+              <div class="info">
+                <div class="name">{{ product.name }}</div>
+                <div class="muted" style="font-size:12px;">{{ "{:,}".format(product.price) }}원 · {{ product.status }}</div>
+              </div>
+            </a>
           </li>
         {% endfor %}
       </ul>
     {% else %}
-      <p>등록한 상품이 없습니다.</p>
+      <div class="empty-state">
+        <div class="icon">🗂️</div>
+        <p>등록한 상품이 없습니다.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

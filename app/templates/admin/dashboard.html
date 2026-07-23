@@ -3,13 +3,39 @@
 {% block content %}
   <div class="card">
     <h1>관리자 대시보드</h1>
-    <p>전체 회원 수: {{ stats.user_count }}</p>
-    <p>전체 상품 수: {{ stats.product_count }}</p>
-    <p>처리 대기 중인 신고: {{ stats.pending_report_count }}</p>
-    <div style="margin-top:16px;display:flex;gap:8px;">
-      <a class="btn" href="{{ url_for('admin.users') }}">회원 관리</a>
-      <a class="btn" href="{{ url_for('admin.products') }}">상품 관리</a>
-      <a class="btn" href="{{ url_for('admin.reports') }}">신고 관리</a>
+    <p class="muted" style="margin-top:0;">플랫폼 전체 현황을 한눈에 확인하고 관리하세요.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-number" data-target="{{ stats.user_count }}">0</span>
+      <span class="stat-label">전체 회원</span>
     </div>
+    <div class="stat">
+      <span class="stat-number" data-target="{{ stats.product_count }}">0</span>
+      <span class="stat-label">전체 상품</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number" data-target="{{ stats.pending_report_count }}">0</span>
+      <span class="stat-label">처리 대기 신고</span>
+    </div>
+  </div>
+
+  <div class="feature-grid">
+    <a class="feature-card" href="{{ url_for('admin.users') }}" style="text-decoration:none;color:inherit;display:block;">
+      <div class="icon">👥</div>
+      <h3>회원 관리</h3>
+      <p>회원 목록 확인, 정지/활성화 처리</p>
+    </a>
+    <a class="feature-card" href="{{ url_for('admin.products') }}" style="text-decoration:none;color:inherit;display:block;">
+      <div class="icon">📦</div>
+      <h3>상품 관리</h3>
+      <p>상품 목록 확인, 차단/삭제 처리</p>
+    </a>
+    <a class="feature-card" href="{{ url_for('admin.reports') }}" style="text-decoration:none;color:inherit;display:block;">
+      <div class="icon">🚩</div>
+      <h3>신고 관리</h3>
+      <p>신고 내역 확인, 처리 완료 표시</p>
+    </a>
   </div>
 {% endblock %}

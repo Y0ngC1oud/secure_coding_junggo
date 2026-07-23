@@ -2,12 +2,17 @@
 {% block title %}{{ profile_user.nickname }}님의 프로필 - Tiny Market{% endblock %}
 {% block content %}
   <div class="card">
-    <h1>{{ profile_user.nickname }}</h1>
-    <p class="muted">{{ profile_user.created_at.strftime('%Y-%m-%d') }} 가입</p>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="icon-badge" style="width:52px;height:52px;font-size:22px;border-radius:14px;">{{ profile_user.nickname[0] }}</div>
+      <div>
+        <h1 style="margin-bottom:2px;">{{ profile_user.nickname }}</h1>
+        <p class="muted" style="margin:0;font-size:13px;">{{ profile_user.created_at.strftime('%Y-%m-%d') }} 가입</p>
+      </div>
+    </div>
     {% if profile_user.bio %}
-      <p style="white-space:pre-line;margin-top:12px;">{{ profile_user.bio }}</p>
+      <p style="white-space:pre-line;margin-top:14px;">{{ profile_user.bio }}</p>
     {% else %}
-      <p class="muted" style="margin-top:12px;">등록된 소개글이 없습니다.</p>
+      <p class="muted" style="margin-top:14px;">등록된 소개글이 없습니다.</p>
     {% endif %}
   </div>
 
@@ -33,7 +38,10 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="muted">등록한 상품이 없습니다.</p>
+      <div class="empty-state">
+        <div class="icon">📦</div>
+        <p>등록한 상품이 없습니다.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

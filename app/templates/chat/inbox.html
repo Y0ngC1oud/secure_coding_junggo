@@ -4,16 +4,22 @@
   <div class="card">
     <h1>1:1 채팅</h1>
     {% if conversations %}
-      <ul>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
         {% for conv in conversations %}
-          <li>
-            <a href="{{ url_for('chat.conversation', user_id=conv.user.id) }}">{{ conv.user.nickname }}</a>
-            <span style="color:#888;font-size:13px;"> - {{ conv.last_message.content }}</span>
-          </li>
+          <a href="{{ url_for('chat.conversation', user_id=conv.user.id) }}" class="chat-row">
+            <div class="icon-badge" style="width:38px;height:38px;font-size:15px;border-radius:10px;flex-shrink:0;">{{ conv.user.nickname[0] }}</div>
+            <div style="min-width:0;">
+              <div style="font-weight:600;font-size:14px;">{{ conv.user.nickname }}</div>
+              <div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ conv.last_message.content }}</div>
+            </div>
+          </a>
         {% endfor %}
-      </ul>
+      </div>
     {% else %}
-      <p>아직 대화한 상대가 없습니다. 상품 상세 페이지에서 판매자와 채팅을 시작해보세요.</p>
+      <div class="empty-state">
+        <div class="icon">💬</div>
+        <p>아직 대화한 상대가 없습니다. 상품 상세 페이지에서 판매자와 채팅을 시작해보세요.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

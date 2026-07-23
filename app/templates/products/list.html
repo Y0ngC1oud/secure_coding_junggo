@@ -39,7 +39,10 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="muted">등록된 상품이 없습니다.</p>
+      <div class="empty-state">
+        <div class="icon">📦</div>
+        <p>등록된 상품이 없습니다.</p>
+      </div>
     {% endif %}
   </div>
 

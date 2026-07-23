@@ -10,11 +10,11 @@
       <div class="flash error">이 상품은 차단되어 판매자와 관리자만 볼 수 있습니다.</div>
     {% endif %}
 
-    <h1>{{ product.name }}</h1>
-    <p style="font-size:20px;font-weight:700;">{{ "{:,}".format(product.price) }}원</p>
-    <p style="color:#666;">카테고리: {{ product.category }}</p>
-    <p style="color:#666;">판매자: <a href="{{ url_for('auth.public_profile', user_id=product.seller_id) }}">{{ product.seller.nickname }}</a></p>
-    <p style="white-space:pre-line;margin-top:16px;">{{ product.description }}</p>
+    <span class="chip" style="pointer-events:none;">{{ product.category }}</span>
+    <h1 style="margin-top:10px;">{{ product.name }}</h1>
+    <p style="font-size:24px;font-weight:800;color:var(--color-primary);">{{ "{:,}".format(product.price) }}원</p>
+    <p class="muted">판매자: <a href="{{ url_for('auth.public_profile', user_id=product.seller_id) }}">{{ product.seller.nickname }}</a></p>
+    <p style="white-space:pre-line;margin-top:16px;line-height:1.7;">{{ product.description }}</p>
 
     {% if current_user.is_authenticated and current_user.id == product.seller_id %}
       <div style="margin-top:20px;display:flex;gap:8px;">

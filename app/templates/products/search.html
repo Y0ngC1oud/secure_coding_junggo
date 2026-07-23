@@ -45,7 +45,10 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="muted">검색 결과가 없습니다.</p>
+      <div class="empty-state">
+        <div class="icon">🔍</div>
+        <p>검색 결과가 없습니다.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

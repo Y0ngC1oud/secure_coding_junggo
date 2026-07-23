@@ -2,24 +2,39 @@
 {% block title %}거래 내역 - Tiny Market{% endblock %}
 {% block content %}
   <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
       <h1>거래 내역</h1>
       <a class="btn" href="{{ url_for('transfers.new_transfer') }}">송금하기</a>
     </div>
-    <p style="color:#666;">내 잔액: {{ "{:,}".format(current_user.balance) }}원</p>
+    <p class="muted">내 잔액: <strong style="color:var(--color-text);">{{ "{:,}".format(current_user.balance) }}원</strong></p>
 
     {% if transactions %}
-      <ul>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
         {% for tx in transactions %}
           {% if tx.sender_id == current_user.id %}
-            <li>{{ tx.created_at.strftime('%Y-%m-%d %H:%M') }} - <strong>{{ tx.receiver.nickname }}</strong>님에게 {{ "{:,}".format(tx.amount) }}원 보냄</li>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--color-border);border-radius:10px;">
+              <div>
+                <strong>{{ tx.receiver.nickname }}</strong>님에게 보냄
+                <div class="muted" style="font-size:12px;">{{ tx.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              </div>
+              <span style="color:var(--color-danger);font-weight:700;">-{{ "{:,}".format(tx.amount) }}원</span>
+            </div>
           {% else %}
-            <li>{{ tx.created_at.strftime('%Y-%m-%d %H:%M') }} - <strong>{{ tx.sender.nickname }}</strong>님에게서 {{ "{:,}".format(tx.amount) }}원 받음</li>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--color-border);border-radius:10px;">
+              <div>
+                <strong>{{ tx.sender.nickname }}</strong>님에게 받음
+                <div class="muted" style="font-size:12px;">{{ tx.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              </div>
+              <span style="color:var(--color-success-text);font-weight:700;">+{{ "{:,}".format(tx.amount) }}원</span>
+            </div>
           {% endif %}
         {% endfor %}
-      </ul>
+      </div>
     {% else %}
-      <p>거래 내역이 없습니다.</p>
+      <div class="empty-state">
+        <div class="icon">💸</div>
+        <p>거래 내역이 없습니다.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}
