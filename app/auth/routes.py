@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, flash, redirect, render_template, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
 from ..extensions import db, limiter
@@ -21,7 +21,6 @@ def register():
         user = User(
             username=form.username.data,
             nickname=form.nickname.data,
-            balance=current_app.config["STARTING_BALANCE"],
         )
         user.set_password(form.password.data)
         db.session.add(user)

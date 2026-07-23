@@ -21,4 +21,3 @@ class Config:
     SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "false").lower() == "true"
 
     REPORT_THRESHOLD = int(os.environ.get("REPORT_THRESHOLD", 3))
-    STARTING_BALANCE = int(os.environ.get("STARTING_BALANCE", 100000))
