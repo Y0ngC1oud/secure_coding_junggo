@@ -24,10 +24,14 @@ def create_app():
         return models.User.query.get(int(user_id))
 
     from .auth.routes import auth_bp
+    from .chat.routes import chat_bp
     from .main.routes import main_bp
+    from .products.routes import products_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(products_bp)
+    app.register_blueprint(chat_bp)
 
     with app.app_context():
         db.create_all()

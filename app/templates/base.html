@@ -9,7 +9,9 @@
 <body>
   <nav class="navbar">
     <a class="brand" href="{{ url_for('main.home') }}">Tiny Market</a>
-    {% block nav_links %}{% endblock %}
+    {% block nav_links %}
+      <a href="{{ url_for('products.list_products') }}">상품 목록</a>
+    {% endblock %}
     <div class="nav-right">
       {% block nav_right %}
         {% if current_user.is_authenticated %}

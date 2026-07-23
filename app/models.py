@@ -72,6 +72,9 @@ class Message(db.Model):
     content = db.Column(db.String(500), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    sender = db.relationship("User", foreign_keys=[sender_id])
+    receiver = db.relationship("User", foreign_keys=[receiver_id])
+
 
 class Transaction(db.Model):
     __tablename__ = "transactions"
