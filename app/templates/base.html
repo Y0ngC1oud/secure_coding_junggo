@@ -12,7 +12,13 @@
     {% block nav_links %}{% endblock %}
     <div class="nav-right">
       {% block nav_right %}
-        <a href="{{ url_for('auth.register') }}">회원가입</a>
+        {% if current_user.is_authenticated %}
+          <span style="margin-right:16px;color:#666;">{{ current_user.nickname }}님</span>
+          <a href="{{ url_for('auth.logout') }}">로그아웃</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}">로그인</a>
+          <a href="{{ url_for('auth.register') }}">회원가입</a>
+        {% endif %}
       {% endblock %}
     </div>
   </nav>

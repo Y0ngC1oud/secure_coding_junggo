@@ -24,3 +24,8 @@ class RegisterForm(FlaskForm):
         "비밀번호 확인",
         validators=[DataRequired(), EqualTo("password", message="비밀번호가 일치하지 않습니다.")],
     )
+
+
+class LoginForm(FlaskForm):
+    username = StringField("아이디", validators=[DataRequired(message="아이디를 입력해주세요.")])
+    password = PasswordField("비밀번호", validators=[DataRequired(message="비밀번호를 입력해주세요.")])
