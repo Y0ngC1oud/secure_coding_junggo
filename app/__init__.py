@@ -61,8 +61,28 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        _ensure_seed_admin(app, models)
 
     return app
+
+
+def _ensure_seed_admin(app, models):
+    """.env에 ADMIN_USERNAME/ADMIN_PASSWORD가 설정되어 있으면 해당 계정을 관리자로 보장한다.
+    CLI 명령을 잊거나 잘못 입력해도 서버를 켤 때마다 자동으로 관리자 계정이 준비되도록 하기 위함."""
+    username = os.environ.get("ADMIN_USERNAME")
+    password = os.environ.get("ADMIN_PASSWORD")
+    if not username or not password:
+        return
+
+    user = models.User.query.filter_by(username=username).first()
+    if user is None:
+        user = models.User(username=username, nickname=os.environ.get("ADMIN_NICKNAME", username))
+        user.set_password(password)
+        db.session.add(user)
+
+    user.role = "admin"
+    user.status = "active"
+    db.session.commit()
 
 
 def _ensure_runtime_dirs(app):
