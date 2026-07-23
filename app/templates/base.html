@@ -11,7 +11,9 @@
     <a class="brand" href="{{ url_for('main.home') }}">Tiny Market</a>
     {% block nav_links %}{% endblock %}
     <div class="nav-right">
-      {% block nav_right %}{% endblock %}
+      {% block nav_right %}
+        <a href="{{ url_for('auth.register') }}">회원가입</a>
+      {% endblock %}
     </div>
   </nav>
 

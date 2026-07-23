@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}회원가입 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:420px;margin:0 auto;">
+    <h1>회원가입</h1>
+    <form class="stacked" method="post" novalidate>
+      {{ form.hidden_tag() }}
+
+      <label for="{{ form.username.id }}">{{ form.username.label.text }}</label>
+      {{ form.username(id=form.username.id) }}
+      {% for error in form.username.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.nickname.id }}">{{ form.nickname.label.text }}</label>
+      {{ form.nickname(id=form.nickname.id) }}
+      {% for error in form.nickname.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.password.id }}">{{ form.password.label.text }}</label>
+      {{ form.password(id=form.password.id) }}
+      {% for error in form.password.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.password_confirm.id }}">{{ form.password_confirm.label.text }}</label>
+      {{ form.password_confirm(id=form.password_confirm.id) }}
+      {% for error in form.password_confirm.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <button class="btn" type="submit" style="margin-top:16px;width:100%;">가입하기</button>
+    </form>
+  </div>
+{% endblock %}

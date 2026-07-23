@@ -23,9 +23,11 @@ def create_app():
     def load_user(user_id):
         return models.User.query.get(int(user_id))
 
+    from .auth.routes import auth_bp
     from .main.routes import main_bp
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
 
     with app.app_context():
         db.create_all()
