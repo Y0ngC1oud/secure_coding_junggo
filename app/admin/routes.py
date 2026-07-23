@@ -56,6 +56,27 @@ def update_user_status(user_id):
     return redirect(url_for("admin.users"))
 
 
+@admin_bp.route("/users/<int:user_id>/balance", methods=["POST"])
+@admin_required
+def update_user_balance(user_id):
+    target = User.query.get_or_404(user_id)
+
+    raw_balance = request.form.get("balance", "")
+    if not raw_balance.isdigit():
+        flash("잔액은 0 이상의 숫자로 입력해주세요.", "error")
+        return redirect(url_for("admin.users"))
+
+    new_balance = int(raw_balance)
+    if new_balance > 100_000_000:
+        flash("잔액은 1억원을 초과할 수 없습니다.", "error")
+        return redirect(url_for("admin.users"))
+
+    target.balance = new_balance
+    db.session.commit()
+    flash(f"{target.nickname}님의 잔액이 {new_balance:,}원으로 설정되었습니다.", "success")
+    return redirect(url_for("admin.users"))
+
+
 @admin_bp.route("/products")
 @admin_required
 def products():
