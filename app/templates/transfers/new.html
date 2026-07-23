@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}송금 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:420px;margin:0 auto;">
+    <h1>송금하기</h1>
+    <p style="color:#666;">내 잔액: {{ "{:,}".format(current_user.balance) }}원</p>
+    <form class="stacked" method="post" novalidate>
+      {{ form.hidden_tag() }}
+
+      <label for="{{ form.receiver_username.id }}">{{ form.receiver_username.label.text }}</label>
+      {{ form.receiver_username(id=form.receiver_username.id) }}
+      {% for error in form.receiver_username.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.amount.id }}">{{ form.amount.label.text }}</label>
+      {{ form.amount(id=form.amount.id) }}
+      {% for error in form.amount.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <button class="btn" type="submit" style="margin-top:16px;width:100%;">송금하기</button>
+    </form>
+    <p style="margin-top:12px;font-size:13px;">
+      <a href="{{ url_for('transfers.history') }}">거래 내역 보기</a>
+    </p>
+  </div>
+{% endblock %}
