@@ -2,6 +2,7 @@ import os
 
 import click
 from flask import Flask
+from flask_login import current_user, logout_user
 
 from .config import Config
 from .extensions import csrf, db, limiter, login_manager
@@ -39,6 +40,12 @@ def create_app():
     app.register_blueprint(reports_bp)
     app.register_blueprint(transfers_bp)
     app.register_blueprint(admin_bp)
+
+    @app.before_request
+    def enforce_active_status():
+        # 로그인 중인 사용자가 관리자에 의해 정지/휴면 처리되면 다음 요청에서 즉시 세션을 종료
+        if current_user.is_authenticated and current_user.status != "active":
+            logout_user()
 
     @app.cli.command("create-admin")
     @click.argument("username")
