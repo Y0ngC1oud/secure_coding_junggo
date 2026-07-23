@@ -1,8 +1,64 @@
 {% extends "base.html" %}
 {% block title %}홈 - Tiny Market{% endblock %}
 {% block content %}
+  <div class="hero">
+    <span class="eyebrow">중고거래 플랫폼</span>
+    <h1>필요 없는 물건, 필요한 사람에게.</h1>
+    <p>Tiny Market에서 중고 물품을 올리고, 채팅으로 이야기하고, 안전하게 송금까지 한 번에 끝내보세요.</p>
+    <div class="cta">
+      <a class="btn" href="{{ url_for('products.list_products') }}">상품 둘러보기</a>
+      {% if not current_user.is_authenticated %}
+        <a class="btn secondary" href="{{ url_for('auth.register') }}">회원가입하기</a>
+      {% else %}
+        <a class="btn secondary" href="{{ url_for('products.create_product') }}">상품 등록하기</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">💬</div>
+      <h3>실시간 소통</h3>
+      <p>전체 채팅과 1:1 채팅으로 판매자와 바로 이야기하세요.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💸</div>
+      <h3>간편 송금</h3>
+      <p>플랫폼 잔액으로 사용자 간 송금하고 거래 내역을 확인하세요.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🛡️</div>
+      <h3>안전한 거래</h3>
+      <p>신고가 누적된 사용자·상품은 자동으로 제재됩니다.</p>
+    </div>
+  </div>
+
   <div class="card">
-    <h1>Tiny Market에 오신 걸 환영합니다</h1>
-    <p>중고 물품을 사고 팔 수 있는 소규모 중고거래 플랫폼입니다.</p>
+    <div class="section-heading">
+      <h2>최근 등록된 상품</h2>
+      <a href="{{ url_for('products.list_products') }}">전체 보기 →</a>
+    </div>
+    {% if recent_products %}
+      <ul class="product-grid">
+        {% for product in recent_products %}
+          <li>
+            <a class="product-card" href="{{ url_for('products.detail_product', product_id=product.id) }}">
+              <div class="thumb">
+                {% if product.image_path %}
+                  <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+                {% else %}
+                  이미지 없음
+                {% endif %}
+              </div>
+              <div class="info">
+                <div class="name">{{ product.name }}</div>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">아직 등록된 상품이 없습니다. 첫 상품을 등록해보세요!</p>
+    {% endif %}
   </div>
 {% endblock %}

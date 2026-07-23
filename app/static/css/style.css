@@ -311,6 +311,108 @@ table tbody tr:hover {
   background: var(--color-bg);
 }
 
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c6cf0 100%);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 48px 40px;
+  box-shadow: var(--shadow);
+}
+
+.hero .eyebrow {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.hero p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 480px;
+  margin: 0 0 22px;
+}
+
+.hero .cta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero .btn.secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.hero .btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.hero .btn:not(.secondary) {
+  background: #fff;
+  color: var(--color-primary);
+}
+
+.hero .btn:not(.secondary):hover {
+  background: #f0f0ff;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.section-heading a {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.feature-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.feature-card .icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.feature-card h3 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.feature-card p {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
 /* Chat */
 .chat-box {
   max-height: 320px;
