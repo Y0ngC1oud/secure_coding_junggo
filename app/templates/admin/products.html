@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}상품 관리 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>상품 관리</h1>
+    <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+      <thead>
+        <tr style="text-align:left;border-bottom:1px solid #e2e4e8;">
+          <th style="padding:8px;">상품명</th>
+          <th style="padding:8px;">판매자</th>
+          <th style="padding:8px;">가격</th>
+          <th style="padding:8px;">상태</th>
+          <th style="padding:8px;">조치</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+          <tr style="border-bottom:1px solid #f0f1f3;">
+            <td style="padding:8px;"><a href="{{ url_for('products.detail_product', product_id=product.id) }}">{{ product.name }}</a></td>
+            <td style="padding:8px;">{{ product.seller.nickname }}</td>
+            <td style="padding:8px;">{{ "{:,}".format(product.price) }}원</td>
+            <td style="padding:8px;">{{ product.status }}</td>
+            <td style="padding:8px;">
+              <form method="post" action="{{ url_for('admin.update_product_status', product_id=product.id) }}" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="active">
+                <button class="btn secondary" type="submit" style="padding:4px 8px;font-size:12px;">활성화</button>
+              </form>
+              <form method="post" action="{{ url_for('admin.update_product_status', product_id=product.id) }}" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="blocked">
+                <button class="btn danger" type="submit" style="padding:4px 8px;font-size:12px;">차단</button>
+              </form>
+              <form method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}" style="display:inline;" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn danger" type="submit" style="padding:4px 8px;font-size:12px;">삭제</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -62,6 +62,8 @@ class Report(db.Model):
     status = db.Column(db.String(10), nullable=False, default="pending")  # pending, resolved
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    reporter = db.relationship("User", foreign_keys=[reporter_id])
+
 
 class Message(db.Model):
     __tablename__ = "messages"

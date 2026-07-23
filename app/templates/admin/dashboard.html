@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}관리자 대시보드 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>관리자 대시보드</h1>
+    <p>전체 회원 수: {{ stats.user_count }}</p>
+    <p>전체 상품 수: {{ stats.product_count }}</p>
+    <p>처리 대기 중인 신고: {{ stats.pending_report_count }}</p>
+    <div style="margin-top:16px;display:flex;gap:8px;">
+      <a class="btn" href="{{ url_for('admin.users') }}">회원 관리</a>
+      <a class="btn" href="{{ url_for('admin.products') }}">상품 관리</a>
+      <a class="btn" href="{{ url_for('admin.reports') }}">신고 관리</a>
+    </div>
+  </div>
+{% endblock %}

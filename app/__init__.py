@@ -1,5 +1,6 @@
 import os
 
+import click
 from flask import Flask
 
 from .config import Config
@@ -23,6 +24,7 @@ def create_app():
     def load_user(user_id):
         return models.User.query.get(int(user_id))
 
+    from .admin.routes import admin_bp
     from .auth.routes import auth_bp
     from .chat.routes import chat_bp
     from .main.routes import main_bp
@@ -36,6 +38,19 @@ def create_app():
     app.register_blueprint(chat_bp)
     app.register_blueprint(reports_bp)
     app.register_blueprint(transfers_bp)
+    app.register_blueprint(admin_bp)
+
+    @app.cli.command("create-admin")
+    @click.argument("username")
+    def create_admin(username):
+        """지정한 아이디의 사용자를 관리자 권한으로 승격합니다."""
+        user = models.User.query.filter_by(username=username).first()
+        if user is None:
+            click.echo(f"사용자 '{username}'를 찾을 수 없습니다.")
+            return
+        user.role = "admin"
+        db.session.commit()
+        click.echo(f"'{username}' 님을 관리자로 지정했습니다.")
 
     with app.app_context():
         db.create_all()

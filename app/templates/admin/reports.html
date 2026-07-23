@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}신고 관리 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>신고 관리</h1>
+    <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+      <thead>
+        <tr style="text-align:left;border-bottom:1px solid #e2e4e8;">
+          <th style="padding:8px;">유형</th>
+          <th style="padding:8px;">대상</th>
+          <th style="padding:8px;">신고자</th>
+          <th style="padding:8px;">사유</th>
+          <th style="padding:8px;">상태</th>
+          <th style="padding:8px;">조치</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in reports %}
+          <tr style="border-bottom:1px solid #f0f1f3;">
+            <td style="padding:8px;">{{ "상품" if report.target_type == "product" else "사용자" }}</td>
+            <td style="padding:8px;">{{ target_labels[report.id] }}</td>
+            <td style="padding:8px;">{{ report.reporter.nickname }}</td>
+            <td style="padding:8px;">{{ report.reason }}</td>
+            <td style="padding:8px;">{{ report.status }}</td>
+            <td style="padding:8px;">
+              {% if report.status == "pending" %}
+                <form method="post" action="{{ url_for('admin.resolve_report', report_id=report.id) }}" style="display:inline;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn secondary" type="submit" style="padding:4px 8px;font-size:12px;">처리 완료</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
