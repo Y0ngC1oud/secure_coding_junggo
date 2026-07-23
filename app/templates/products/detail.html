@@ -24,6 +24,10 @@
           <button class="btn danger" type="submit">삭제</button>
         </form>
       </div>
+    {% elif current_user.is_authenticated %}
+      <div style="margin-top:20px;">
+        <a class="btn" href="{{ url_for('chat.conversation', user_id=product.seller_id) }}">판매자와 채팅하기</a>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

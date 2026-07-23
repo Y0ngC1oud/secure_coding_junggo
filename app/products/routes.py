@@ -4,7 +4,7 @@ import uuid
 from flask import Blueprint, abort, current_app, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
-from ..chat.forms import GlobalChatForm
+from ..chat.forms import MessageForm
 from ..extensions import db
 from ..models import Message, Product
 from .forms import ProductForm
@@ -18,7 +18,7 @@ def list_products():
     messages = (
         Message.query.filter_by(receiver_id=None).order_by(Message.created_at.asc()).limit(50).all()
     )
-    chat_form = GlobalChatForm()
+    chat_form = MessageForm()
     return render_template(
         "products/list.html", products=products, messages=messages, chat_form=chat_form
     )

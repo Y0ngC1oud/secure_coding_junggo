@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}채팅 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>1:1 채팅</h1>
+    {% if conversations %}
+      <ul>
+        {% for conv in conversations %}
+          <li>
+            <a href="{{ url_for('chat.conversation', user_id=conv.user.id) }}">{{ conv.user.nickname }}</a>
+            <span style="color:#888;font-size:13px;"> - {{ conv.last_message.content }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>아직 대화한 상대가 없습니다. 상품 상세 페이지에서 판매자와 채팅을 시작해보세요.</p>
+    {% endif %}
+  </div>
+{% endblock %}
