@@ -3,15 +3,13 @@
 {% block content %}
   <div class="card">
     <h1>{{ partner.nickname }}님과의 채팅</h1>
-    <div style="max-height:360px;overflow-y:auto;border:1px solid #e2e4e8;border-radius:6px;padding:10px;margin-bottom:12px;">
+    <div class="chat-box" style="max-height:360px;">
       {% if messages %}
         {% for message in messages %}
-          <p style="margin:4px 0;font-size:14px;">
-            <strong>{{ message.sender.nickname }}</strong>: {{ message.content }}
-          </p>
+          <p class="chat-message"><strong>{{ message.sender.nickname }}</strong>: {{ message.content }}</p>
         {% endfor %}
       {% else %}
-        <p style="color:#888;">대화를 시작해보세요.</p>
+        <p class="muted">대화를 시작해보세요.</p>
       {% endif %}
     </div>
 
