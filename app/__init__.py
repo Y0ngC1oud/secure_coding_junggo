@@ -77,9 +77,10 @@ def _ensure_seed_admin(app, models):
     user = models.User.query.filter_by(username=username).first()
     if user is None:
         user = models.User(username=username, nickname=os.environ.get("ADMIN_NICKNAME", username))
-        user.set_password(password)
         db.session.add(user)
 
+    # .env의 값이 항상 최종 상태가 되도록 매번 동기화 (이미 다른 비밀번호로 가입돼 있던 경우도 덮어씀)
+    user.set_password(password)
     user.role = "admin"
     user.status = "active"
     db.session.commit()
