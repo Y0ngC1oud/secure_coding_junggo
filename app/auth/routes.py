@@ -2,8 +2,8 @@ from flask import Blueprint, current_app, flash, redirect, render_template, url_
 from flask_login import current_user, login_required, login_user, logout_user
 
 from ..extensions import db, limiter
-from ..models import User
-from .forms import LoginForm, RegisterForm
+from ..models import Product, User
+from .forms import ChangePasswordForm, LoginForm, ProfileForm, RegisterForm
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -64,3 +64,48 @@ def logout():
     logout_user()
     flash("로그아웃되었습니다.", "info")
     return redirect(url_for("main.home"))
+
+
+@auth_bp.route("/mypage")
+@login_required
+def mypage():
+    profile_form = ProfileForm(bio=current_user.bio)
+    password_form = ChangePasswordForm()
+    my_products = (
+        Product.query.filter_by(seller_id=current_user.id).order_by(Product.created_at.desc()).all()
+    )
+    return render_template(
+        "auth/mypage.html",
+        profile_form=profile_form,
+        password_form=password_form,
+        my_products=my_products,
+    )
+
+
+@auth_bp.route("/mypage/bio", methods=["POST"])
+@login_required
+def update_bio():
+    profile_form = ProfileForm()
+    if profile_form.validate_on_submit():
+        current_user.bio = profile_form.bio.data
+        db.session.commit()
+        flash("소개글이 수정되었습니다.", "success")
+    else:
+        flash("소개글 수정에 실패했습니다.", "error")
+    return redirect(url_for("auth.mypage"))
+
+
+@auth_bp.route("/mypage/password", methods=["POST"])
+@login_required
+def update_password():
+    password_form = ChangePasswordForm()
+    if password_form.validate_on_submit():
+        if not current_user.check_password(password_form.current_password.data):
+            flash("현재 비밀번호가 올바르지 않습니다.", "error")
+            return redirect(url_for("auth.mypage"))
+        current_user.set_password(password_form.new_password.data)
+        db.session.commit()
+        flash("비밀번호가 변경되었습니다.", "success")
+    else:
+        flash("비밀번호 변경에 실패했습니다.", "error")
+    return redirect(url_for("auth.mypage"))

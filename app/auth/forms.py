@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length, Regexp
 
 
@@ -29,3 +29,19 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField("아이디", validators=[DataRequired(message="아이디를 입력해주세요.")])
     password = PasswordField("비밀번호", validators=[DataRequired(message="비밀번호를 입력해주세요.")])
+
+
+class ProfileForm(FlaskForm):
+    bio = TextAreaField("소개글", validators=[Length(max=200, message="소개글은 200자 이내로 작성해주세요.")])
+
+
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField("현재 비밀번호", validators=[DataRequired(message="현재 비밀번호를 입력해주세요.")])
+    new_password = PasswordField(
+        "새 비밀번호",
+        validators=[DataRequired(message="새 비밀번호를 입력해주세요."), Length(min=8, max=100, message="비밀번호는 8자 이상이어야 합니다.")],
+    )
+    new_password_confirm = PasswordField(
+        "새 비밀번호 확인",
+        validators=[DataRequired(), EqualTo("new_password", message="비밀번호가 일치하지 않습니다.")],
+    )
