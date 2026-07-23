@@ -45,7 +45,10 @@
     {% if my_products %}
       <ul>
         {% for product in my_products %}
-          <li>{{ product.name }} - {{ "{:,}".format(product.price) }}원 ({{ product.status }})</li>
+          <li>
+            <a href="{{ url_for('products.detail_product', product_id=product.id) }}">{{ product.name }}</a>
+            - {{ "{:,}".format(product.price) }}원 ({{ product.status }})
+          </li>
         {% endfor %}
       </ul>
     {% else %}

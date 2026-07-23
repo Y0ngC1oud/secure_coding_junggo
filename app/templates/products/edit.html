@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}상품 수정 - Tiny Market{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:480px;margin:0 auto;">
+    <h1>상품 수정</h1>
+    <form class="stacked" method="post" enctype="multipart/form-data" novalidate>
+      {{ form.hidden_tag() }}
+
+      <label for="{{ form.name.id }}">{{ form.name.label.text }}</label>
+      {{ form.name(id=form.name.id) }}
+      {% for error in form.name.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.description.id }}">{{ form.description.label.text }}</label>
+      {{ form.description(id=form.description.id, rows=4) }}
+      {% for error in form.description.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.price.id }}">{{ form.price.label.text }}</label>
+      {{ form.price(id=form.price.id) }}
+      {% for error in form.price.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <label for="{{ form.category.id }}">{{ form.category.label.text }}</label>
+      {{ form.category(id=form.category.id) }}
+      {% for error in form.category.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      {% if product.image_path %}
+        <p style="margin-top:8px;font-size:13px;color:#666;">현재 이미지가 등록되어 있습니다. 교체하려면 새 파일을 선택하세요.</p>
+      {% endif %}
+      <label for="{{ form.image.id }}">{{ form.image.label.text }}</label>
+      {{ form.image(id=form.image.id) }}
+      {% for error in form.image.errors %}<div class="flash error">{{ error }}</div>{% endfor %}
+
+      <button class="btn" type="submit" style="margin-top:16px;width:100%;">수정 완료</button>
+    </form>
+  </div>
+{% endblock %}

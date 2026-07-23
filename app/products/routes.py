@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from flask import Blueprint, current_app, flash, redirect, render_template, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from ..chat.forms import GlobalChatForm
@@ -44,6 +44,56 @@ def create_product():
         return redirect(url_for("products.list_products"))
 
     return render_template("products/create.html", form=form)
+
+
+@products_bp.route("/<int:product_id>")
+def detail_product(product_id):
+    product = Product.query.get_or_404(product_id)
+
+    if product.status != "active":
+        is_owner = current_user.is_authenticated and current_user.id == product.seller_id
+        is_admin = current_user.is_authenticated and current_user.is_admin
+        if not (is_owner or is_admin):
+            abort(404)
+
+    return render_template("products/detail.html", product=product)
+
+
+@products_bp.route("/<int:product_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    if product.seller_id != current_user.id:
+        abort(403)
+
+    form = ProductForm(obj=product)
+    if form.validate_on_submit():
+        product.name = form.name.data
+        product.description = form.description.data
+        product.price = form.price.data
+        product.category = form.category.data
+        if form.image.data and form.image.data.filename:
+            new_image = _save_product_image(form.image.data)
+            if new_image:
+                product.image_path = new_image
+        db.session.commit()
+        flash("상품이 수정되었습니다.", "success")
+        return redirect(url_for("products.detail_product", product_id=product.id))
+
+    return render_template("products/edit.html", form=form, product=product)
+
+
+@products_bp.route("/<int:product_id>/delete", methods=["POST"])
+@login_required
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    if product.seller_id != current_user.id:
+        abort(403)
+
+    db.session.delete(product)
+    db.session.commit()
+    flash("상품이 삭제되었습니다.", "success")
+    return redirect(url_for("auth.mypage"))
 
 
 def _save_product_image(file_storage):
