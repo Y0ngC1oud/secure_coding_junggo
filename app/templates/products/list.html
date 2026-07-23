@@ -2,7 +2,12 @@
 {% block title %}상품 목록 - Tiny Market{% endblock %}
 {% block content %}
   <div class="card">
-    <h1>상품 목록</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h1>상품 목록</h1>
+      {% if current_user.is_authenticated %}
+        <a class="btn" href="{{ url_for('products.create_product') }}">상품 등록</a>
+      {% endif %}
+    </div>
     {% if products %}
       <ul>
         {% for product in products %}
