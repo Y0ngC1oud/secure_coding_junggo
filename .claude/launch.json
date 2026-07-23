@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flask-dev",
+      "runtimeExecutable": "/Users/wooyongun/Desktop/WHS/secure-coding/assignment/.venv/bin/python",
+      "runtimeArgs": ["/Users/wooyongun/Desktop/WHS/secure-coding/assignment/run.py"],
+      "port": 5050,
+      "autoPort": true
+    }
+  ]
+}

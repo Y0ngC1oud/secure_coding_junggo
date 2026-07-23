@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Malgun Gothic", sans-serif;
+  background: #f5f6f8;
+  color: #222;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e4e8;
+}
+
+.navbar a {
+  color: #222;
+  text-decoration: none;
+  margin-right: 16px;
+  font-size: 14px;
+}
+
+.navbar .brand {
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: 24px;
+}
+
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.flash {
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.flash.error {
+  background: #fdecea;
+  color: #b3261e;
+}
+
+.flash.success {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.flash.info {
+  background: #e8f0fe;
+  color: #1a56db;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e4e8;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.btn.secondary {
+  background: #6b7280;
+}
+
+.btn.danger {
+  background: #dc2626;
+}
+
+form.stacked label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #444;
+}
+
+form.stacked input,
+form.stacked textarea,
+form.stacked select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 14px;
+}
