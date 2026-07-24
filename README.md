@@ -21,18 +21,16 @@ source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 cp .env.example .env
-# .env를 열어 SECRET_KEY를 임의의 랜덤 값으로 변경 (아래 명령으로 생성 가능)
-python3 -c "import secrets; print(secrets.token_hex(32))"
 ```
 
-`.env` 예시:
+`.env.example`에는 바로 동작하는 기본값이 이미 채워져 있어서 **별도 수정 없이 그대로 써도 된다.** 필요하면 아래 값만 원하는 대로 바꾸면 된다(특히 운영 배포 시 `SECRET_KEY`, `ADMIN_PASSWORD`는 직접 바꾸는 것을 권장).
 
 ```
-SECRET_KEY=<위에서 생성한 랜덤 값>
+SECRET_KEY=(기본값 그대로 사용 가능, 필요 시 python3 -c "import secrets; print(secrets.token_hex(32))" 로 재생성)
 SESSION_COOKIE_SECURE=false   # HTTPS 배포 시 true로 변경
 FLASK_DEBUG=false             # 로컬 개발 중 자동 리로드가 필요하면 true
-ADMIN_USERNAME=admin          # 아래 "관리자 계정 만들기" 참고 (선택 사항)
-ADMIN_PASSWORD=change-me
+ADMIN_USERNAME=admin          # 아래 "관리자 계정 만들기" 참고
+ADMIN_PASSWORD=admin1234      # 관리자 로그인 비밀번호 — 원하는 값으로 바꿔도 됨
 ADMIN_NICKNAME=관리자
 ```
 
@@ -50,9 +48,14 @@ PORT=5050 python run.py
 
 ## 관리자 계정 만들기
 
-**방법 1 (권장) — `.env`에 값 채우기**
+**방법 1 (권장) — `.env` 값 그대로 사용**
 
-`.env`에 `ADMIN_USERNAME`, `ADMIN_PASSWORD`를 채워두면, 서버를 시작할 때마다 해당 계정이 자동으로 생성되고 관리자 권한과 비밀번호가 `.env` 값 그대로 동기화된다(이미 다른 비밀번호로 가입되어 있던 계정이어도 `.env`의 값으로 덮어씀). 별도 명령 없이 그 아이디/비밀번호로 바로 로그인하면 된다.
+`.env.example`을 그대로 복사했다면 별도 설정 없이 아래 계정으로 바로 로그인하면 관리자다.
+
+- 아이디: `admin`
+- 비밀번호: `admin1234`
+
+서버를 시작할 때마다 `.env`의 `ADMIN_USERNAME`/`ADMIN_PASSWORD` 값으로 해당 계정이 자동 생성되고 관리자 권한·비밀번호가 항상 동기화된다(이미 다른 비밀번호로 가입되어 있던 계정이어도 `.env` 값으로 덮어씀). 비밀번호를 바꾸고 싶으면 `.env`의 `ADMIN_PASSWORD`만 수정하고 서버를 재시작하면 된다.
 
 **방법 2 — CLI 명령**
 
