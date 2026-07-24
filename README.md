@@ -23,16 +23,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-`.env.example`에는 바로 동작하는 기본값이 이미 채워져 있어서 **별도 수정 없이 그대로 써도 된다.** 필요하면 아래 값만 원하는 대로 바꾸면 된다(특히 운영 배포 시 `SECRET_KEY`, `ADMIN_PASSWORD`는 직접 바꾸는 것을 권장).
-
-```
-SECRET_KEY=(기본값 그대로 사용 가능, 필요 시 python3 -c "import secrets; print(secrets.token_hex(32))" 로 재생성)
-SESSION_COOKIE_SECURE=false   # HTTPS 배포 시 true로 변경
-FLASK_DEBUG=false             # 로컬 개발 중 자동 리로드가 필요하면 true
-ADMIN_USERNAME=admin          # 아래 "관리자 계정 만들기" 참고
-ADMIN_PASSWORD=admin1234      # 관리자 로그인 비밀번호 — 원하는 값으로 바꿔도 됨
-ADMIN_NICKNAME=관리자
-```
+[`.env.example`](.env.example)에 바로 동작하는 기본값이 이미 채워져 있어서 **별도 수정 없이 그대로 써도 된다.** 운영 배포 시에는 `SECRET_KEY`와 `ADMIN_PASSWORD`를 직접 원하는 값으로 바꾸는 것을 권장한다(`.env` 파일만 수정하면 되며, 수정 후에는 서버를 재시작해야 반영된다).
 
 ## 실행 방법
 
